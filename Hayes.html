@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hayes Repair Shop Calculator</title>
+  <style>
+    /* ===== Root Theme ===== */
+    :root {
+      --primary: #6366f1;
+      --secondary: #1e293b;
+      --accent: #0ea5e9;
+      --bg: linear-gradient(135deg, #e0e7ff, #f8fafc);
+      --glass: rgba(255, 255, 255, 0.2);
+      --text-light: #f1f5f9;
+      --text-dark: #0f172a;
+    }
+
+    /* ===== Reset & Body ===== */
+    * {
+      box-sizing: border-box;
+      transition: all 0.25s ease;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* ===== Wrapper Grid ===== */
+    .wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .calculator, .info {
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    /* ===== Damage Buttons ===== */
+    .damage-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .damage-btn {
+      background: rgba(99,102,241,0.1);
+      color: var(--secondary);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(99,102,241,0.3);
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .damage-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 10px rgba(99,102,241,0.6);
+    }
+
+    .damage-btn:hover {
+      transform: translateY(-2px);
+      background: var(--primary);
+      color: white;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.7);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: white;
+    }
+
+    .total {
+      margin-top: 1.5rem;
+      font-size: 1.7rem;
+      font-weight: bold;
+      text-align: center;
+      color: var(--primary);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-clear {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 12px;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-clear:hover {
+      background: #0f172a;
+      transform: scale(1.02);
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      background: rgba(255,255,255,0.6);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid rgba(226,232,240,0.5);
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: rgba(99,102,241,0.1);
+      font-weight: 600;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Calculator -->
+    <div class="calculator">
+      <h1>Hayes Repair Shop</h1>
+
+      <div class="damage-buttons" id="damageButtons">
+        <div class="damage-btn active" data-value="450">Minor<br>$450</div>
+        <div class="damage-btn" data-value="650">Moderate<br>$650</div>
+        <div class="damage-btn" data-value="950">Heavy<br>$950</div>
+        <div class="damage-btn" data-value="1050">Severe<br>$1050</div>
+        <div class="damage-btn" data-value="1200">Extreme<br>$1200</div>
+      </div>
+
+      <label>Doors ($100):</label>
+      <input type="number" id="doors" value="0" min="0" />
+
+      <label>Windows ($60):</label>
+      <input type="number" id="windows" value="0" min="0" />
+
+      <label>Tyres ($50):</label>
+      <input type="number" id="tyres" value="0" min="0" />
+
+      <label>Motor Oil ($700):</label>
+      <input type="number" id="oil" value="0" min="0" />
+
+      <label>Advanced Repair Kit ($700):</label>
+      <input type="number" id="kit" value="0" min="0" />
+
+      <div class="total" id="total">Total: $0</div>
+
+      <button class="btn-clear" onclick="clearAll()">Clear</button>
+
+      <footer>Created by Mahir © 2025</footer>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info">
+      <h2>Hayes Charge Sheet</h2>
+      <table>
+        <tr><th>Damage Level</th><th>Cost</th><th>Materials Required</th></tr>
+        <tr><td>Minor</td><td>$450</td><td>2 Scraps + 1 Steel + 1 Aluminum</td></tr>
+        <tr><td>Moderate</td><td>$650</td><td>2 Scraps + 2 Steel + 2 Aluminum</td></tr>
+        <tr><td>Heavy</td><td>$950</td><td>4 Scraps + 2 Steel + 2 Aluminum</td></tr>
+        <tr><td>Severe</td><td>$1050</td><td>6 Scraps + 2 Steel + 2 Aluminum</td></tr>
+        <tr><td>Extreme</td><td>$1200</td><td>6 Scraps + 3 Steel + 3 Aluminum</td></tr>
+      </table>
+
+      <h2>Other Items Cost</h2>
+      <table>
+        <tr><th>Item</th><th>Cost</th><th>Materials Required</th></tr>
+        <tr><td>Door</td><td>$100</td><td>1 Scrap</td></tr>
+        <tr><td>Window</td><td>$60</td><td>1 Glass</td></tr>
+        <tr><td>Tyre</td><td>$50</td><td>1 Rubber</td></tr>
+        <tr><td>Motor Oil</td><td>$700</td><td>—</td></tr>
+        <tr><td>Advanced Repair Kit</td><td>$700</td><td>2 Scraps + 2 Aluminum + 4 Rubber + 2 Glass</td></tr>
+      </table>
+
+      <h2>Towing System</h2>
+      <table>
+        <tr><th>Service</th><th>Cost</th></tr>
+        <tr><td>In City Tow</td><td>$50</td></tr>
+        <tr><td>Out of City Tow</td><td>$100</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const totalEl = document.getElementById("total");
+    const damageBtns = document.querySelectorAll(".damage-btn");
+    const inputs = document.querySelectorAll("input");
+
+    let selectedDamage = 0;
+
+    damageBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        damageBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedDamage = parseInt(btn.dataset.value);
+        calculateTotal();
+      });
+    });
+
+    function calculateTotal() {
+      let doors = parseInt(document.getElementById("doors").value) * 100;
+      let windows = parseInt(document.getElementById("windows").value) * 60;
+      let tyres = parseInt(document.getElementById("tyres").value) * 50;
+      let oil = parseInt(document.getElementById("oil").value) * 700;
+      let kit = parseInt(document.getElementById("kit").value) * 700;
+
+      let total = selectedDamage + doors + windows + tyres + oil + kit;
+      totalEl.textContent = "Total: $" + total.toLocaleString();
+      totalEl.style.transform = "scale(1.1)";
+      setTimeout(() => totalEl.style.transform = "scale(1)", 150);
+    }
+
+    function clearAll() {
+      inputs.forEach(input => input.value = 0);
+      damageBtns.forEach(b => b.classList.remove("active"));
+      selectedDamage = 0;
+      totalEl.textContent = "Total: $0";
+    }
+
+    inputs.forEach(input => {
+      input.addEventListener("input", calculateTotal);
+    });
+
+    calculateTotal();
+  </script>
+</body>
+</html>
