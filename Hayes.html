@@ -182,7 +182,8 @@
       <h1>Hayes Repair Shop</h1>
 
       <div class="damage-buttons" id="damageButtons">
-        <div class="damage-btn active" data-value="450">Minor<br>$450</div>
+        <!-- No 'active' here so nothing is selected by default -->
+        <div class="damage-btn" data-value="450">Minor<br>$450</div>
         <div class="damage-btn" data-value="650">Moderate<br>$650</div>
         <div class="damage-btn" data-value="950">Heavy<br>$950</div>
         <div class="damage-btn" data-value="1050">Severe<br>$1050</div>
@@ -247,16 +248,22 @@
     const damageBtns = document.querySelectorAll(".damage-btn");
     const inputs = document.querySelectorAll("input");
 
-    // Initialize selectedDamage from the active button if present
+    // Start with no damage selected
     let selectedDamage = 0;
-    const activeBtn = document.querySelector(".damage-btn.active");
-    if (activeBtn) selectedDamage = parseInt(activeBtn.dataset.value, 10) || 0;
 
+    // Wire up damage buttons: clicking selects a damage level (and toggles active class)
     damageBtns.forEach(btn => {
       btn.addEventListener("click", () => {
+        // If the clicked button is already active, toggle it off (so you can deselect)
+        const alreadyActive = btn.classList.contains("active");
         damageBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        selectedDamage = parseInt(btn.dataset.value, 10) || 0;
+        if (!alreadyActive) {
+          btn.classList.add("active");
+          selectedDamage = parseInt(btn.dataset.value, 10) || 0;
+        } else {
+          // deselected -> ensure selectedDamage is zero
+          selectedDamage = 0;
+        }
         calculateTotal();
       });
     });
@@ -281,18 +288,11 @@
       setTimeout(() => totalEl.style.transform = "scale(1)", 150);
     }
 
-    // Clear function that always shows Total: $0
+    // Clear function that always shows Total: $0 and deselects damage
     function clearAll() {
-      // reset all numeric inputs to 0
       inputs.forEach(input => input.value = 0);
-
-      // remove any active damage selection
       damageBtns.forEach(b => b.classList.remove("active"));
-
-      // ensure internal damage value is zero
       selectedDamage = 0;
-
-      // explicitly set the displayed total to $0
       totalEl.textContent = "Total: $0";
       totalEl.style.transform = "scale(1)";
     }
@@ -308,7 +308,7 @@
       });
     });
 
-    // initial calc
+    // initial calc - will be $0 because selectedDamage is 0 and inputs are 0
     calculateTotal();
   </script>
 </body>
