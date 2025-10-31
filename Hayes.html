@@ -190,19 +190,19 @@
       </div>
 
       <label>Doors ($100):</label>
-      <input type="number" id="doors" value="0" min="0" />
+      <input type="number" id="doors" value="0" min="0" step="1" />
 
       <label>Windows ($60):</label>
-      <input type="number" id="windows" value="0" min="0" />
+      <input type="number" id="windows" value="0" min="0" step="1" />
 
       <label>Tyres ($50):</label>
-      <input type="number" id="tyres" value="0" min="0" />
+      <input type="number" id="tyres" value="0" min="0" step="1" />
 
       <label>Motor Oil ($700):</label>
-      <input type="number" id="oil" value="0" min="0" />
+      <input type="number" id="oil" value="0" min="0" step="1" />
 
       <label>Advanced Repair Kit ($700):</label>
-      <input type="number" id="kit" value="0" min="0" />
+      <input type="number" id="kit" value="0" min="0" step="1" />
 
       <div class="total" id="total">Total: $0</div>
 
@@ -247,41 +247,68 @@
     const damageBtns = document.querySelectorAll(".damage-btn");
     const inputs = document.querySelectorAll("input");
 
+    // Initialize selectedDamage from the active button if present
     let selectedDamage = 0;
+    const activeBtn = document.querySelector(".damage-btn.active");
+    if (activeBtn) selectedDamage = parseInt(activeBtn.dataset.value, 10) || 0;
 
     damageBtns.forEach(btn => {
       btn.addEventListener("click", () => {
         damageBtns.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        selectedDamage = parseInt(btn.dataset.value);
+        selectedDamage = parseInt(btn.dataset.value, 10) || 0;
         calculateTotal();
       });
     });
 
-    function calculateTotal() {
-      let doors = parseInt(document.getElementById("doors").value) * 100;
-      let windows = parseInt(document.getElementById("windows").value) * 60;
-      let tyres = parseInt(document.getElementById("tyres").value) * 50;
-      let oil = parseInt(document.getElementById("oil").value) * 700;
-      let kit = parseInt(document.getElementById("kit").value) * 700;
+    // Helper: safely read integer input and fallback to 0
+    function getCount(id, price) {
+      const raw = document.getElementById(id).value;
+      const n = parseInt(raw, 10);
+      return (isNaN(n) ? 0 : n) * price;
+    }
 
-      let total = selectedDamage + doors + windows + tyres + oil + kit;
+    function calculateTotal() {
+      const doors = getCount("doors", 100);
+      const windows = getCount("windows", 60);
+      const tyres = getCount("tyres", 50);
+      const oil = getCount("oil", 700);
+      const kit = getCount("kit", 700);
+
+      const total = selectedDamage + doors + windows + tyres + oil + kit;
       totalEl.textContent = "Total: $" + total.toLocaleString();
       totalEl.style.transform = "scale(1.1)";
       setTimeout(() => totalEl.style.transform = "scale(1)", 150);
     }
 
+    // Clear function that always shows Total: $0
     function clearAll() {
+      // reset all numeric inputs to 0
       inputs.forEach(input => input.value = 0);
+
+      // remove any active damage selection
       damageBtns.forEach(b => b.classList.remove("active"));
+
+      // ensure internal damage value is zero
       selectedDamage = 0;
+
+      // explicitly set the displayed total to $0
       totalEl.textContent = "Total: $0";
+      totalEl.style.transform = "scale(1)";
     }
 
+    // Keep inputs robust: update total on input and ensure empty -> 0 on blur
     inputs.forEach(input => {
       input.addEventListener("input", calculateTotal);
+      input.addEventListener("blur", function() {
+        if (this.value === "" || this.value === null) {
+          this.value = 0;
+          calculateTotal();
+        }
+      });
     });
 
+    // initial calc
     calculateTotal();
   </script>
 </body>
