@@ -1,315 +1,1105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hayes Repair Shop Calculator</title>
-  <style>
-    /* ===== Root Theme ===== */
-    :root {
-      --primary: #6366f1;
-      --secondary: #1e293b;
-      --accent: #0ea5e9;
-      --bg: linear-gradient(135deg, #e0e7ff, #f8fafc);
-      --glass: rgba(255, 255, 255, 0.2);
-      --text-light: #f1f5f9;
-      --text-dark: #0f172a;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayes Repair Shop | Professional Auto Repair Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5b6bf0;
+            --primary-light: #7b88f5;
+            --primary-dark: #4a56d4;
+            --secondary: #8b5cf6;
+            --accent: #f472b6;
+            --success: #60d9fa;
+            --warning: #f9a826;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --text: #334155;
+            --bg: #ffffff;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --border: #f1f5f9;
+            --gradient: linear-gradient(135deg, #5b6bf0 0%, #8b5cf6 100%);
+            --gradient-light: linear-gradient(135deg, #7b88f5 0%, #a78bfa 100%);
+        }
 
-    /* ===== Reset & Body ===== */
-    * {
-      box-sizing: border-box;
-      transition: all 0.25s ease;
-    }
+        .dark-theme {
+            --primary: #7b88f5;
+            --primary-light: #5b6bf0;
+            --primary-dark: #4a56d4;
+            --secondary: #a78bfa;
+            --accent: #f472b6;
+            --success: #60d9fa;
+            --warning: #f9a826;
+            --light: #0f172a;
+            --dark: #f8fafc;
+            --text: #e2e8f0;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --border: #334155;
+            --gradient: linear-gradient(135deg, #4a56d4 0%, #7c3aed 100%);
+            --gradient-light: linear-gradient(135deg, #5b6bf0 0%, #8b5cf6 100%);
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                       color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                       border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                       transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                       box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-    /* ===== Wrapper Grid ===== */
-    .wrapper {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      width: 100%;
-      max-width: 1200px;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 55%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05) 0%, transparent 55%);
+        }
 
-    .calculator, .info {
-      background: var(--glass);
-      backdrop-filter: blur(16px);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-    }
+        .dark-theme body {
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(120, 119, 198, 0.05) 0%, transparent 55%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 55%);
+        }
 
-    h1, h2 {
-      text-align: center;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(91, 107, 240, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
 
-    /* ===== Damage Buttons ===== */
-    .damage-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: -0.02em;
+        }
 
-    .damage-btn {
-      background: rgba(99,102,241,0.1);
-      color: var(--secondary);
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      border: 1px solid rgba(99,102,241,0.3);
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-      font-size: 0.95rem;
-    }
+        .logo i {
+            font-size: 1.9rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
 
-    .damage-btn.active {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 0 10px rgba(99,102,241,0.6);
-    }
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-    .damage-btn:hover {
-      transform: translateY(-2px);
-      background: var(--primary);
-      color: white;
-    }
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
 
-    label {
-      font-weight: 600;
-      margin-top: 1rem;
-      display: block;
-    }
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 1rem;
-      background: rgba(255,255,255,0.7);
-    }
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
 
-    input:focus {
-      outline: none;
-      border-color: var(--accent);
-      background: white;
-    }
+        section {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px var(--shadow);
+            border: 1px solid var(--border);
+            height: fit-content;
+            backdrop-filter: blur(10px);
+        }
 
-    .total {
-      margin-top: 1.5rem;
-      font-size: 1.7rem;
-      font-weight: bold;
-      text-align: center;
-      color: var(--primary);
-      transition: all 0.2s ease-in-out;
-    }
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
 
-    .btn-clear {
-      margin-top: 1.5rem;
-      width: 100%;
-      padding: 12px;
-      background: var(--secondary);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
 
-    .btn-clear:hover {
-      background: #0f172a;
-      transform: scale(1.02);
-    }
+        h2 i {
+            color: var(--accent);
+            background: var(--gradient-light);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-    footer {
-      margin-top: 1.5rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: #64748b;
-    }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1.5rem;
-      background: rgba(255,255,255,0.6);
-      border-radius: 12px;
-      overflow: hidden;
-    }
+        label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text);
+        }
 
-    th, td {
-      border: 1px solid rgba(226,232,240,0.5);
-      padding: 8px 10px;
-      text-align: left;
-      font-size: 0.95rem;
-    }
+        .damage-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
 
-    th {
-      background: rgba(99,102,241,0.1);
-      font-weight: 600;
-    }
+        .damage-btn {
+            padding: 0.9rem 0.6rem;
+            border: 2px solid var(--border);
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 5px var(--shadow);
+        }
 
-    /* ===== Responsive ===== */
-    @media (max-width: 768px) {
-      .wrapper {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        .damage-btn:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px var(--shadow);
+        }
+
+        .damage-btn.selected {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(91, 107, 240, 0.3);
+        }
+
+        .damage-cost {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.5rem;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            background: var(--light);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(91, 107, 240, 0.08);
+            border-color: var(--primary-light);
+        }
+
+        .checkbox-item input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--success);
+        }
+
+        .item-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .item-card {
+            background: var(--light);
+            border-radius: 14px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow);
+            border-color: var(--primary-light);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .item-cost {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 10px rgba(91, 107, 240, 0.3);
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 15px rgba(91, 107, 240, 0.4);
+        }
+
+        .quantity-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .quantity-display {
+            font-weight: 700;
+            min-width: 35px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .total-section {
+            background: var(--gradient);
+            padding: 1.8rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: white;
+            box-shadow: 0 15px 35px rgba(91, 107, 240, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .total-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .total-section h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .total-amount {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.02em;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            letter-spacing: -0.01em;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e89a1c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 1rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--light);
+        }
+
+        tr {
+            transition: background-color 0.3s ease;
+        }
+
+        tr:hover {
+            background-color: rgba(91, 107, 240, 0.05);
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            padding: 1.2rem 1.8rem;
+            background: var(--gradient);
+            color: white;
+            border-radius: 14px;
+            box-shadow: 0 15px 35px rgba(91, 107, 240, 0.25);
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-item:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            section {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+            
+            .item-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .damage-levels {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+            
+            .main-container {
+                margin: 1.5rem auto;
+            }
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+        }
+        
+        .notification.warning {
+            background: linear-gradient(135deg, #f9a826 0%, #f59e0b 100%);
+        }
+        
+        /* Enhanced focus states for accessibility */
+        button:focus, input:focus {
+            outline: 2px solid var(--primary-light);
+            outline-offset: 2px;
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Loading animation enhancement */
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Subtle pulse animation for total amount */
+        @keyframes subtlePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .total-amount.updated {
+            animation: subtlePulse 0.5s ease;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrapper">
-    <!-- Calculator -->
-    <div class="calculator">
-      <h1>Hayes Repair Shop</h1>
+    <header>
+        <div class="logo">
+            <i class="fas fa-tools"></i>
+            <span>Hayes Repair Shop</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <span id="themeIcon"><i class="fas fa-moon"></i></span> 
+            <span id="themeText">Dark Mode</span>
+        </button>
+    </header>
 
-      <div class="damage-buttons" id="damageButtons">
-        <!-- No 'active' here so nothing is selected by default -->
-        <div class="damage-btn" data-value="450">Minor<br>$450</div>
-        <div class="damage-btn" data-value="650">Moderate<br>$650</div>
-        <div class="damage-btn" data-value="950">Heavy<br>$950</div>
-        <div class="damage-btn" data-value="1050">Severe<br>$1050</div>
-        <div class="damage-btn" data-value="1200">Extreme<br>$1200</div>
-      </div>
+    <div class="main-container">
+        <section class="calculator-column">
+            <h2><i class="fas fa-calculator"></i> Repair Cost Calculator</h2>
+            
+            <div class="form-group">
+                <label>Tow Service</label>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="towService">
+                    <label for="towService">Include Tow Service ($100)</label>
+                </div>
+            </div>
 
-      <label>Doors ($100):</label>
-      <input type="number" id="doors" value="0" min="0" step="1" />
+            <div class="form-group">
+                <label>Damage Level</label>
+                <div class="damage-levels">
+                    <div class="damage-btn" data-level="minor">
+                        <span>Minor</span>
+                        <span class="damage-cost">$450</span>
+                    </div>
+                    <div class="damage-btn" data-level="moderate">
+                        <span>Moderate</span>
+                        <span class="damage-cost">$650</span>
+                    </div>
+                    <div class="damage-btn" data-level="heavy">
+                        <span>Heavy</span>
+                        <span class="damage-cost">$950</span>
+                    </div>
+                    <div class="damage-btn" data-level="severe">
+                        <span>Severe</span>
+                        <span class="damage-cost">$1050</span>
+                    </div>
+                    <div class="damage-btn" data-level="extreme">
+                        <span>Extreme</span>
+                        <span class="damage-cost">$1200</span>
+                    </div>
+                </div>
+            </div>
 
-      <label>Windows ($60):</label>
-      <input type="number" id="windows" value="0" min="0" step="1" />
+            <div class="form-group">
+                <label>Additional Repair Items</label>
+                <div class="item-group">
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-name">Doors</div>
+                            <div class="item-cost">$100</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" data-item="doors" data-action="decrease" disabled>-</button>
+                            <div class="quantity-display" data-item="doors">0</div>
+                            <button class="quantity-btn" data-item="doors" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-name">Windows</div>
+                            <div class="item-cost">$60</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" data-item="windows" data-action="decrease" disabled>-</button>
+                            <div class="quantity-display" data-item="windows">0</div>
+                            <button class="quantity-btn" data-item="windows" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-name">Tyres</div>
+                            <div class="item-cost">$50</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" data-item="tyres" data-action="decrease" disabled>-</button>
+                            <div class="quantity-display" data-item="tyres">0</div>
+                            <button class="quantity-btn" data-item="tyres" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-name">Motor Oil</div>
+                            <div class="item-cost">$700</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" data-item="motorOil" data-action="decrease" disabled>-</button>
+                            <div class="quantity-display" data-item="motorOil">0</div>
+                            <button class="quantity-btn" data-item="motorOil" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-name">Repair Kit</div>
+                            <div class="item-cost">$700</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" data-item="repairKit" data-action="decrease" disabled>-</button>
+                            <div class="quantity-display" data-item="repairKit">0</div>
+                            <button class="quantity-btn" data-item="repairKit" data-action="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <label>Tyres ($50):</label>
-      <input type="number" id="tyres" value="0" min="0" step="1" />
+            <div class="total-section">
+                <h3>Total Amount</h3>
+                <div class="total-amount" id="totalAmount">$0</div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-warning" id="clearCalculator">
+                        <i class="fas fa-broom"></i> Clear
+                    </button>
+                    <button class="btn btn-primary" id="copyReceipt">
+                        <i class="fas fa-receipt"></i> Copy Receipt
+                    </button>
+                </div>
+            </div>
+        </section>
 
-      <label>Motor Oil ($700):</label>
-      <input type="number" id="oil" value="0" min="0" step="1" />
+        <section class="info-column">
+            <h2><i class="fas fa-car-crash"></i> Damage Level Costs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Damage Level</th>
+                        <th>Cost</th>
+                        <th>Materials Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Minor</td>
+                        <td>$450</td>
+                        <td>2 Scraps + 1 Steel + 1 Aluminum</td>
+                    </tr>
+                    <tr>
+                        <td>Moderate</td>
+                        <td>$650</td>
+                        <td>2 Scraps + 2 Steel + 2 Aluminum</td>
+                    </tr>
+                    <tr>
+                        <td>Heavy</td>
+                        <td>$950</td>
+                        <td>4 Scraps + 2 Steel + 2 Aluminum</td>
+                    </tr>
+                    <tr>
+                        <td>Severe</td>
+                        <td>$1050</td>
+                        <td>6 Scraps + 2 Steel + 2 Aluminum</td>
+                    </tr>
+                    <tr>
+                        <td>Extreme</td>
+                        <td>$1200</td>
+                        <td>6 Scraps + 3 Steel + 3 Aluminum</td>
+                    </tr>
+                </tbody>
+            </table>
 
-      <label>Advanced Repair Kit ($700):</label>
-      <input type="number" id="kit" value="0" min="0" step="1" />
-
-      <div class="total" id="total">Total: $0</div>
-
-      <button class="btn-clear" onclick="clearAll()">Clear</button>
-
-      <footer>Created by Mahir © 2025</footer>
+            <h2 style="margin-top: 1.5rem;"><i class="fas fa-toolbox"></i> Item Costs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Cost</th>
+                        <th>Materials Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Door</td>
+                        <td>$100</td>
+                        <td>1 Scrap</td>
+                    </tr>
+                    <tr>
+                        <td>Window</td>
+                        <td>$60</td>
+                        <td>1 Glass</td>
+                    </tr>
+                    <tr>
+                        <td>Tyre</td>
+                        <td>$50</td>
+                        <td>1 Rubber</td>
+                    </tr>
+                    <tr>
+                        <td>Motor Oil</td>
+                        <td>$700</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Repair Kit</td>
+                        <td>$700</td>
+                        <td>2 Scraps + 2 Aluminum + 4 Rubber + 2 Glass</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
     </div>
 
-    <!-- Info Section -->
-    <div class="info">
-      <h2>Hayes Charge Sheet</h2>
-      <table>
-        <tr><th>Damage Level</th><th>Cost</th><th>Materials Required</th></tr>
-        <tr><td>Minor</td><td>$450</td><td>2 Scraps + 1 Steel + 1 Aluminum</td></tr>
-        <tr><td>Moderate</td><td>$650</td><td>2 Scraps + 2 Steel + 2 Aluminum</td></tr>
-        <tr><td>Heavy</td><td>$950</td><td>4 Scraps + 2 Steel + 2 Aluminum</td></tr>
-        <tr><td>Severe</td><td>$1050</td><td>6 Scraps + 2 Steel + 2 Aluminum</td></tr>
-        <tr><td>Extreme</td><td>$1200</td><td>6 Scraps + 3 Steel + 3 Aluminum</td></tr>
-      </table>
-
-      <h2>Other Items Cost</h2>
-      <table>
-        <tr><th>Item</th><th>Cost</th><th>Materials Required</th></tr>
-        <tr><td>Door</td><td>$100</td><td>1 Scrap</td></tr>
-        <tr><td>Window</td><td>$60</td><td>1 Glass</td></tr>
-        <tr><td>Tyre</td><td>$50</td><td>1 Rubber</td></tr>
-        <tr><td>Motor Oil</td><td>$700</td><td>—</td></tr>
-        <tr><td>Advanced Repair Kit</td><td>$700</td><td>2 Scraps + 2 Aluminum + 4 Rubber + 2 Glass</td></tr>
-      </table>
-
-      <h2>Towing System</h2>
-      <table>
-        <tr><th>Service</th><th>Cost</th></tr>
-        <tr><td>In City Tow</td><td>$50</td></tr>
-        <tr><td>Out of City Tow</td><td>$100</td></tr>
-      </table>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>Receipt copied to clipboard!</span>
     </div>
-  </div>
 
-  <script>
-    const totalEl = document.getElementById("total");
-    const damageBtns = document.querySelectorAll(".damage-btn");
-    const inputs = document.querySelectorAll("input");
+    <footer>
+        <div class="footer-content">
+            <p>© 2023 Hayes Repair Shop. All rights reserved.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>123 Repair Street, Auto City</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>(555) 123-REPAIR</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>service@hayesrepair.com</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    // Start with no damage selected
-    let selectedDamage = 0;
+    <script>
+        // Configuration object for maintainability
+        const CONFIG = {
+            itemCosts: {
+                doors: 100,
+                windows: 60,
+                tyres: 50,
+                motorOil: 700,
+                repairKit: 700
+            },
+            damageCosts: {
+                minor: 450,
+                moderate: 650,
+                heavy: 950,
+                severe: 1050,
+                extreme: 1200
+            },
+            towServiceCost: 100
+        };
 
-    // Wire up damage buttons: clicking selects a damage level (and toggles active class)
-    damageBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        // If the clicked button is already active, toggle it off (so you can deselect)
-        const alreadyActive = btn.classList.contains("active");
-        damageBtns.forEach(b => b.classList.remove("active"));
-        if (!alreadyActive) {
-          btn.classList.add("active");
-          selectedDamage = parseInt(btn.dataset.value, 10) || 0;
-        } else {
-          // deselected -> ensure selectedDamage is zero
-          selectedDamage = 0;
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeIcon.innerHTML = '<i class="fas fa-sun"></i>';
+            themeText.textContent = 'Light Mode';
         }
-        calculateTotal();
-      });
-    });
 
-    // Helper: safely read integer input and fallback to 0
-    function getCount(id, price) {
-      const raw = document.getElementById(id).value;
-      const n = parseInt(raw, 10);
-      return (isNaN(n) ? 0 : n) * price;
-    }
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = '<i class="fas fa-sun"></i>';
+                themeText.textContent = 'Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = '<i class="fas fa-moon"></i>';
+                themeText.textContent = 'Dark Mode';
+            }
+        });
 
-    function calculateTotal() {
-      const doors = getCount("doors", 100);
-      const windows = getCount("windows", 60);
-      const tyres = getCount("tyres", 50);
-      const oil = getCount("oil", 700);
-      const kit = getCount("kit", 700);
+        // Calculator functionality
+        const damageButtons = document.querySelectorAll('.damage-btn');
+        const quantityButtons = document.querySelectorAll('.quantity-btn');
+        const quantityDisplays = document.querySelectorAll('.quantity-display');
+        const towServiceCheckbox = document.getElementById('towService');
+        const totalAmountElement = document.getElementById('totalAmount');
+        const copyReceiptButton = document.getElementById('copyReceipt');
+        const clearCalculatorButton = document.getElementById('clearCalculator');
+        const notification = document.getElementById('notification');
 
-      const total = selectedDamage + doors + windows + tyres + oil + kit;
-      totalEl.textContent = "Total: $" + total.toLocaleString();
-      totalEl.style.transform = "scale(1.1)";
-      setTimeout(() => totalEl.style.transform = "scale(1)", 150);
-    }
+        let selectedDamageLevel = null;
+        let totalAmount = 0;
 
-    // Clear function that always shows Total: $0 and deselects damage
-    function clearAll() {
-      inputs.forEach(input => input.value = 0);
-      damageBtns.forEach(b => b.classList.remove("active"));
-      selectedDamage = 0;
-      totalEl.textContent = "Total: $0";
-      totalEl.style.transform = "scale(1)";
-    }
+        // Initialize quantities
+        let quantities = {
+            doors: 0,
+            windows: 0,
+            tyres: 0,
+            motorOil: 0,
+            repairKit: 0
+        };
 
-    // Keep inputs robust: update total on input and ensure empty -> 0 on blur
-    inputs.forEach(input => {
-      input.addEventListener("input", calculateTotal);
-      input.addEventListener("blur", function() {
-        if (this.value === "" || this.value === null) {
-          this.value = 0;
-          calculateTotal();
+        // Set up damage level buttons
+        damageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove selected class from all buttons
+                damageButtons.forEach(btn => btn.classList.remove('selected'));
+                // Add selected class to clicked button
+                button.classList.add('selected');
+                
+                // Update selected damage level
+                selectedDamageLevel = button.getAttribute('data-level');
+                
+                // Recalculate total
+                calculateTotal();
+            });
+        });
+
+        // Set up quantity buttons
+        quantityButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.getAttribute('data-item');
+                const action = button.getAttribute('data-action');
+                
+                if (action === 'increase') {
+                    quantities[item]++;
+                } else if (action === 'decrease' && quantities[item] > 0) {
+                    quantities[item]--;
+                }
+                
+                // Update display
+                updateQuantityDisplay(item);
+                
+                // Update button states
+                updateButtonStates(item);
+                
+                // Recalculate total
+                calculateTotal();
+            });
+        });
+
+        // Set up tow service checkbox
+        towServiceCheckbox.addEventListener('change', calculateTotal);
+
+        // Update quantity display
+        function updateQuantityDisplay(item) {
+            const display = document.querySelector(`.quantity-display[data-item="${item}"]`);
+            if (display) {
+                display.textContent = quantities[item];
+            }
         }
-      });
-    });
 
-    // initial calc - will be $0 because selectedDamage is 0 and inputs are 0
-    calculateTotal();
-  </script>
+        // Update button states (enable/disable)
+        function updateButtonStates(item) {
+            const decreaseButton = document.querySelector(`.quantity-btn[data-item="${item}"][data-action="decrease"]`);
+            if (decreaseButton) {
+                decreaseButton.disabled = quantities[item] === 0;
+            }
+        }
+
+        // Calculate total function
+        function calculateTotal() {
+            totalAmount = 0;
+            
+            // Add damage level cost
+            if (selectedDamageLevel) {
+                totalAmount += CONFIG.damageCosts[selectedDamageLevel];
+            }
+            
+            // Add tow service cost if selected
+            if (towServiceCheckbox.checked) {
+                totalAmount += CONFIG.towServiceCost;
+            }
+            
+            // Add item costs
+            for (const item in quantities) {
+                totalAmount += quantities[item] * CONFIG.itemCosts[item];
+            }
+            
+            // Update total amount display with animation
+            totalAmountElement.textContent = `$${totalAmount}`;
+            totalAmountElement.classList.add('updated');
+            setTimeout(() => {
+                totalAmountElement.classList.remove('updated');
+            }, 500);
+        }
+
+        // Copy receipt to clipboard
+        copyReceiptButton.addEventListener('click', async () => {
+            // Check if there's anything to create a receipt for
+            const hasItems = Object.values(quantities).some(qty => qty > 0);
+            const hasServices = selectedDamageLevel || towServiceCheckbox.checked;
+            
+            if (!hasItems && !hasServices) {
+                showNotification('Please add at least one item or service to generate a receipt!', 'warning');
+                return;
+            }
+
+            // Show loading state
+            const originalText = copyReceiptButton.innerHTML;
+            copyReceiptButton.innerHTML = '<i class="fas fa-spinner"></i> Copying...';
+            copyReceiptButton.disabled = true;
+
+            try {
+                let receipt = "HAYES REPAIR SHOP\n";
+                receipt += "Receipt\n";
+                receipt += "------------------------------\n";
+                
+                if (selectedDamageLevel) {
+                    receipt += `Damage Level: ${selectedDamageLevel.charAt(0).toUpperCase() + selectedDamageLevel.slice(1)} - $${CONFIG.damageCosts[selectedDamageLevel]}\n`;
+                }
+                
+                // Add tow service
+                if (towServiceCheckbox.checked) {
+                    receipt += "Tow Service - $100\n";
+                }
+                
+                // Add items with quantities
+                for (const item in quantities) {
+                    if (quantities[item] > 0) {
+                        const itemName = getItemDisplayName(item);
+                        const itemCost = CONFIG.itemCosts[item];
+                        const itemTotal = quantities[item] * itemCost;
+                        receipt += `${itemName} (x${quantities[item]}) - $${itemTotal}\n`;
+                    }
+                }
+                
+                receipt += "------------------------------\n";
+                receipt += `TOTAL: $${totalAmount}\n\n`;
+                receipt += "Thank you for choosing Hayes Repair Shop!";
+                
+                await navigator.clipboard.writeText(receipt);
+                showNotification('Receipt copied to clipboard!');
+                
+            } catch (err) {
+                console.error('Failed to copy receipt: ', err);
+                showNotification('Failed to copy receipt. Please try again.', 'error');
+            } finally {
+                // Restore button state
+                copyReceiptButton.innerHTML = '<i class="fas fa-receipt"></i> Copy Receipt';
+                copyReceiptButton.disabled = false;
+            }
+        });
+
+        // Clear calculator
+        clearCalculatorButton.addEventListener('click', () => {
+            // Reset damage level
+            damageButtons.forEach(btn => btn.classList.remove('selected'));
+            selectedDamageLevel = null;
+            
+            // Reset tow service
+            towServiceCheckbox.checked = false;
+            
+            // Reset quantities
+            for (const item in quantities) {
+                quantities[item] = 0;
+                updateQuantityDisplay(item);
+                updateButtonStates(item);
+            }
+            
+            // Reset total
+            totalAmount = 0;
+            totalAmountElement.textContent = `$${totalAmount}`;
+            
+            showNotification('Calculator cleared!');
+        });
+
+        // Get display name for items
+        function getItemDisplayName(item) {
+            const names = {
+                doors: 'Doors',
+                windows: 'Windows',
+                tyres: 'Tyres',
+                motorOil: 'Motor Oil',
+                repairKit: 'Repair Kit'
+            };
+            return names[item] || item;
+        }
+
+        // Show notification function
+        function showNotification(message, type = 'success') {
+            const icon = notification.querySelector('i');
+            notification.querySelector('span').textContent = message;
+            
+            // Set color based on type
+            if (type === 'warning') {
+                icon.className = 'fas fa-exclamation-triangle';
+                notification.classList.add('warning');
+                notification.classList.remove('error');
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+                notification.classList.add('error');
+                notification.classList.remove('warning');
+            } else {
+                icon.className = 'fas fa-check-circle';
+                notification.classList.remove('warning', 'error');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize button states
+        for (const item in quantities) {
+            updateButtonStates(item);
+        }
+    </script>
 </body>
 </html>
