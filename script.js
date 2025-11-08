@@ -171,7 +171,7 @@ copyReceiptButton.addEventListener('click', async () => {
         let receipt = "HAYES REPAIR SHOP\n";
         receipt += "=== RECEIPT ===\n";
         receipt += "------------------------------\n";
-        receipt += `Intern Macanic : Jolil Mia\n`;
+        receipt += `Intern Mechcanic : Jolil Mia\n`;
         receipt += `Date: ${getFormattedDateTime()}\n`;
         receipt += "------------------------------\n";
         receipt += "SERVICES & ITEMS:\n";
