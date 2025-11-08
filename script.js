@@ -129,6 +129,28 @@ function calculateTotal() {
     totalAmountElement.textContent = `$${totalAmount}`;
 }
 
+// Format date and time in 12-hour format
+function getFormattedDateTime() {
+    const now = new Date();
+    
+    // Format date as MM/DD/YYYY
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const year = now.getFullYear();
+    const formattedDate = `${month}/${day}/${year}`;
+    
+    // Format time in 12-hour format with AM/PM
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Convert 0 to 12
+    
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
+    
+    return `${formattedDate}, ${formattedTime}`;
+}
+
 // Copy receipt to clipboard
 copyReceiptButton.addEventListener('click', async () => {
     // Check if there's anything to create a receipt for
@@ -147,15 +169,16 @@ copyReceiptButton.addEventListener('click', async () => {
 
     try {
         let receipt = "HAYES REPAIR SHOP\n";
-        receipt += "=== REPAIR RECEIPT ===\n";
+        receipt += "=== RECEIPT ===\n";
         receipt += "------------------------------\n";
-        receipt += `Service Advisor: Jolil Mia\n`;
-        receipt += `Date: ${new Date().toLocaleDateString()}\n`;
+        receipt += `Intern Macanic : Jolil Mia\n`;
+        receipt += `Date: ${getFormattedDateTime()}\n`;
         receipt += "------------------------------\n";
         receipt += "SERVICES & ITEMS:\n";
         
         if (selectedDamageLevel) {
-            receipt += `• Damage Repair (${selectedDamageLevel.charAt(0).toUpperCase() + selectedDamageLevel.slice(1)}) - $${CONFIG.damageCosts[selectedDamageLevel]}\n`;
+            const damageName = selectedDamageLevel.charAt(0).toUpperCase() + selectedDamageLevel.slice(1);
+            receipt += `• Damage Repair (${damageName}) - $${CONFIG.damageCosts[selectedDamageLevel]}\n`;
         }
         
         // Add tow service
@@ -176,17 +199,6 @@ copyReceiptButton.addEventListener('click', async () => {
         receipt += "------------------------------\n";
         receipt += `TOTAL: $${totalAmount}\n`;
         receipt += "------------------------------\n";
-        
-        // Determine the appropriate closing based on what was purchased
-        if (selectedDamageLevel) {
-            // If repair was done
-            receipt += "Repaired by: Hayes Repair Team\n";
-            receipt += "Service Advisor: Jolil Mia\n";
-        } else {
-            // If only items were purchased
-            receipt += "Served by: Jolil Mia\n";
-        }
-        
         receipt += "Thank you for choosing Hayes Repair Shop!";
         
         await navigator.clipboard.writeText(receipt);
